@@ -1,0 +1,59 @@
+import simplegui
+score=0
+attemps=0
+t=0
+s=0
+m=0
+f=0
+
+def tick():
+    global t
+    t+=1
+
+def format():
+    global t,m,s,f
+    f=t%10
+    s=t/10
+    m=s/60
+    if t/10>60:
+        s=s-m*60   
+    if len(str(m))==1 or len(str(s))==1 or len(str(f))==1:
+        st=str(m)+':'+'0'+str(s)+':'+'0'+str(f)
+    if len(str(m))==2 or len(str(s))==2 or len(str(f))==2:
+        st=str(m)+':'+str(s)+':'+'0'+str(f)                         
+    return st
+
+def sta():
+    timer.start()
+    
+def stop():
+    global f,score,attemps
+    if timer.is_running():
+        timer.stop()
+        attemps+=1
+        if f==0:
+            score+=1
+        
+   
+def restart():
+    global score,attemps,t,m,s,f
+    t=0
+    attemps=0
+    score=0
+    m=0
+    s=0
+    f=0
+    timer.start()
+    
+def draw(canvas):
+    canvas.draw_text('stop watch',[75,50],25,'white')
+    canvas.draw_text("score:"+str(score)+'/'+str(attemps),[65,100],15,'pink')
+    canvas.draw_text(format(),[50,150],35,'white')
+    
+frame=simplegui.create_frame('dhruvi',250,250)
+frame.start()
+timer=simplegui.create_timer(100,tick)
+frame.set_draw_handler(draw)
+frame.add_button('start',sta)
+frame.add_button('stop',stop)
+frame.add_button('restart',restart)
